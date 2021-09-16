@@ -1,4 +1,5 @@
-# Supervised Machine Learning - Classification: Ticket summaries into categories
+# Supervised Machine Learning
+## Classification: Ticket summaries into categories
 
 
 The deployed web app is live at https://summary-classifier.herokuapp.com/
