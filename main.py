@@ -112,7 +112,7 @@ if sentence != '':
 
 with st.sidebar:
     if sentence != '':
-        cm_labels = pd.read_csv('C:/Users/Mateio/Desktop/freeport/cm_labels.csv')
+        cm_labels = pd.read_csv('cm_labels.csv')
         cm_labels = np.unique(cm_labels)
         prob = Log_Ridge.predict_proba(Test)
         probas = pd.DataFrame()
