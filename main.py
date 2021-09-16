@@ -14,8 +14,8 @@ import nltk
 from nltk.corpus import stopwords
 import numpy as np
 
-vectorizer = pickle.load(open('C:/Users/Mateio/Desktop/freeport/Vectorizer','rb'))
-Log_Ridge = pickle.load(open('C:/Users/Mateio/Desktop/freeport/Model','rb'))
+vectorizer = pickle.load(open('Vectorizer','rb'))
+Log_Ridge = pickle.load(open('Model','rb'))
 
 import string
 def remove_punctuations(text):
