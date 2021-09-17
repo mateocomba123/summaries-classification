@@ -120,7 +120,7 @@ with st.sidebar:
     if sentence != '':
         st.dataframe(probas.sort_values('Prob', ascending=False).style.highlight_max(color = 'lightgreen', axis = 0))
         
-        if predict == tipo:
+        if predict == 'Access Management' or predict == 'Deskside':
              st.dataframe(TypeProbas.sort_values('Prob', ascending=False).style.highlight_max(color = 'lightgreen', axis = 0))
         else:
             st.write('')       
@@ -134,7 +134,7 @@ if sentence != '':
         st.subheader("Category precited: " + predict)      
         Category = st.selectbox('Select Category', probas.sort_values('Prob', ascending=False)['Category'], key="box1")
     
-    if predict == tipo:
+    if predict == 'Access Management' or predict == 'Deskside':
         with col2:
             st.subheader("Type predicted: " + predictType)
             Type = st.selectbox('Select Type', TypeProbas.sort_values('Prob', ascending=False)['Category'], key="box2")
