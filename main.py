@@ -98,7 +98,7 @@ if sentence != '':
             predictType = (M_Type.predict(Test2))
             predictType = predictType[0]
             
-            types = np.load('C:/Users/Mateio/Desktop/freeport/labels' + tipo + '.npy',allow_pickle=True)
+            types = np.load('labels' + tipo + '.npy',allow_pickle=True)
             TypeProb = M_Type.predict_proba(Test2)
             TypeProbas = pd.DataFrame()
             TypeProbas['Category'] = types
