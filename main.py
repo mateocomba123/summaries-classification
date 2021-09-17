@@ -50,8 +50,8 @@ sentence = st.text_area('Input your sentence here:')
 
 if sentence != '':
     #Load model and vectorizer
-    V_Cat = pickle.load(open('C:/Users/Mateio/Desktop/freeport/Vectorizer','rb'))
-    M_Cat = pickle.load(open('C:/Users/Mateio/Desktop/freeport/Model','rb'))
+    V_Cat = pickle.load(open('Vectorizer','rb'))
+    M_Cat = pickle.load(open('Model','rb'))
     
     #Preprocess the sentence
     Test = word_tokenize(sentence)
@@ -87,15 +87,15 @@ if sentence != '':
     if predict == 'Access Management' or predict == 'Deskside':
         
         #Load Type model and vectorizer
-        V_Type = pickle.load(open("C:/Users/Mateio/Desktop/freeport/VectorizerType" + tipo,'rb'))
-        M_Type = pickle.load(open("C:/Users/Mateio/Desktop/freeport/ModelType" + tipo,'rb'))
+        V_Type = pickle.load(open("VectorizerType" + tipo,'rb'))
+        M_Type = pickle.load(open("ModelType" + tipo,'rb'))
        
         ####Type
         Test2 = V_Type.transform([Test])
         predictType = (M_Type.predict(Test2))
         predictType = predictType[0]
         
-        types = np.load('C:/Users/Mateio/Desktop/freeport/labels' + tipo + '.npy',allow_pickle=True)
+        types = np.load('labels' + tipo + '.npy',allow_pickle=True)
         TypeProb = M_Type.predict_proba(Test2)
         TypeProbas = pd.DataFrame()
         TypeProbas['Category'] = types
