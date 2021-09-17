@@ -72,60 +72,6 @@ if sentence != '':
     probas['Category'] = cm_labels
     probas['Prob'] = prob[0]
     print(predict)
-    
-    types = ['Access Management', 'Application', 'Cloud', 'Data Center',
-       'Deskside', 'Employee Status', 'Network', 'Operations',
-       'Process Control', 'Radio', 'Security', 'Voice Communication']
-    
-    #Delete spaces for path string
-    tipo = ''
-    if predict == 'Access Management':
-        tipo = 'AccessManagement'
-    if predict == 'Deskside':
-        tipo = 'Deskside'
-        
-    if predict == 'Access Management' or predict == 'Deskside':
-        
-        #Load Type model and vectorizer
-        V_Type = pickle.load(open("VectorizerType" + tipo,'rb'))
-        M_Type = pickle.load(open("ModelType" + tipo,'rb'))
-       
-        ####Type
-        Test2 = V_Type.transform([Test])
-        predictType = (M_Type.predict(Test2))
-        predictType = predictType[0]
-        
-        types = np.load('labels' + tipo + '.npy',allow_pickle=True)
-        TypeProb = M_Type.predict_proba(Test2)
-        TypeProbas = pd.DataFrame()
-        TypeProbas['Category'] = types
-        TypeProbas['Prob'] = TypeProb[0]
-        print(predictType)
-
-
-
-if sentence != '':
-    
-    from sklearn.pipeline import make_pipeline
-    c = make_pipeline(V_Cat, M_Cat)
-    
-    from lime.lime_text import LimeTextExplainer
-    explainer = LimeTextExplainer(class_names=['Access Management', 'Application', 'Cloud', 'Data Center',
-       'Deskside', 'Employee Status', 'Network', 'Operations',
-       'Process Control', 'Radio', 'Security', 'Voice Communication'])
-    exp = explainer.explain_instance(TestExplainer, c.predict_proba, num_features=10, top_labels=1)
-    html_data = exp.as_html()
-
-with st.sidebar:
-    if sentence != '':
-        st.dataframe(probas.sort_values('Prob', ascending=False).style.highlight_max(color = 'lightgreen', axis = 0))
-        
-        if predict == 'Access Management' or predict == 'Deskside':
-             st.dataframe(TypeProbas.sort_values('Prob', ascending=False).style.highlight_max(color = 'lightgreen', axis = 0))
-        else:
-            st.write('')       
-    else:
-        st.write('')
 
 if sentence != '':
             
@@ -133,10 +79,45 @@ if sentence != '':
     with col1:
         st.subheader("Category precited: " + predict)      
         Category = st.selectbox('Select Category', probas.sort_values('Prob', ascending=False)['Category'], key="box1")
+        
+            #Delete spaces for path string
+        tipo = ''
+        if Category == 'Access Management':
+            tipo = 'AccessManagement'
+        if Category == 'Deskside':
+            tipo = 'Deskside'
+            
+        if Category == 'Access Management' or Category == 'Deskside':
+            
+            #Load Type model and vectorizer
+            V_Type = pickle.load(open("VectorizerType" + tipo,'rb'))
+            M_Type = pickle.load(open("ModelType" + tipo,'rb'))
+           
+            ####Type
+            Test2 = V_Type.transform([Test])
+            predictType = (M_Type.predict(Test2))
+            predictType = predictType[0]
+            
+            types = np.load('C:/Users/Mateio/Desktop/freeport/labels' + tipo + '.npy',allow_pickle=True)
+            TypeProb = M_Type.predict_proba(Test2)
+            TypeProbas = pd.DataFrame()
+            TypeProbas['Category'] = types
+            TypeProbas['Prob'] = TypeProb[0]
     
-    if predict == 'Access Management' or predict == 'Deskside':
+            from sklearn.pipeline import make_pipeline
+            c = make_pipeline(V_Cat, M_Cat)
+    
+            from lime.lime_text import LimeTextExplainer
+            explainer = LimeTextExplainer(class_names=['Access Management', 'Application', 'Cloud', 'Data Center',
+           'Deskside', 'Employee Status', 'Network', 'Operations',
+           'Process Control', 'Radio', 'Security', 'Voice Communication'])
+            exp = explainer.explain_instance(TestExplainer, c.predict_proba, num_features=10, top_labels=1)
+            html_data = exp.as_html()
+    
+    
+    if Category == 'Access Management' or Category == 'Deskside':
         with col2:
-            st.subheader("Type predicted: " + predictType)
+            st.subheader("Type predicted: " + predictType + " (Cat: " + Category + ")")
             Type = st.selectbox('Select Type', TypeProbas.sort_values('Prob', ascending=False)['Category'], key="box2")
         
         
@@ -144,10 +125,19 @@ if sentence != '':
         explainer2 = LimeTextExplainer(class_names=types)
         exp2 = explainer2.explain_instance(TestExplainer, c2.predict_proba, num_features=10, top_labels=1)
         html_data2 = exp2.as_html()
-        components.v1.html(html_data2,width=1000, height=300, scrolling=True)
-        #Showing explainability charts    
         components.v1.html(html_data,width=1000, height=300, scrolling=True)
+        #Showing explainability charts    
+        components.v1.html(html_data2,width=1000, height=300, scrolling=True)
     
     
-    
+with st.sidebar:
+    if sentence != '':
+        st.dataframe(probas.sort_values('Prob', ascending=False).style.highlight_max(color = 'lightgreen', axis = 0))
+        
+        if Category == 'Access Management' or Category == 'Deskside':
+             st.dataframe(TypeProbas.sort_values('Prob', ascending=False).style.highlight_max(color = 'lightgreen', axis = 0))
+        else:
+            st.write('')       
+    else:
+        st.write('')   
     
